@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Menu Checklist - d'sis Catering</title>
+    <link rel="stylesheet" href="checklist.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="admin-layout.css">
+</head>
+<body>
+    <!-- Standardized Header -->
+    <header>
+        <div class="logo-container">
+           <button onclick="history.back()" class="btn btn-outline-secondary">←</button>
+            <img src="pics/logo.png" alt="d'sis Catering Logo" class="header-logo">
+            <div class="logo">d'sis Catering</div>
+        </div>
+        <nav>
+            <ul>
+               
+                <!-- Placeholder for profile/logout -->
+                <li><a href="login.html"><i class="fas fa-user-circle" style="font-size: 24px;" ></i></a></li>
+        </nav>
+    </header>
+
+    <main>
+        <div class="admin-checklist-container">
+            <h1>User Menu Order Checklist</h1>
+
+            <div class="user-info-static">
+                <h2>Order for: Allen Mirienda</h2>
+                <p>Order Date: June 9, 2025</p>
+            </div>
+
+            <div id="menuChecklist" class="menu-checklist">
+                <!-- Example Menu Items (static) -->
+                <div class="menu-checklist-item">
+                    <div class="item-details">
+                        <h3>Roast Chicken</h3>
+                        <p class="description">Whole roasted chicken with herbs</p>
+                        
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="static-item-1">
+                        <label for="static-item-1">Mark Complete</label>
+                    </div>
+                </div>
+
+                <div class="menu-checklist-item">
+                    <div class="item-details">
+                        <h3>Pasta Carbonara</h3>
+                        <p class="description">Creamy pasta with bacon and egg</p>
+                        
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="static-item-2">
+                        <label for="static-item-2">Mark Complete</label>
+                    </div>
+                </div>
+
+                <div class="menu-checklist-item completed"> <!-- Example of a "completed" item -->
+                    <div class="item-details">
+                        <h3>Fresh Garden Salad</h3>
+                        <p class="description">Mixed greens with vinaigrette</p>
+                        
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="static-item-3" checked>
+                        <label for="static-item-3">Completed</label>
+                    </div>
+                </div>
+
+                <div class="menu-checklist-item">
+                    <div class="item-details">
+                        <h3>Chocolate Mousse</h3>
+                        <p class="description">Rich chocolate dessert</p>
+                        
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="static-item-4">
+                        <label for="static-item-4">Mark Complete</label>
+                    </div>
+                </div>
+                
+            </div>
+
+            <a href="bookings.html" class="save-button" style="text-align: center;">Complete</a>
+        </div>
+    </main>
+
+    
+</body>
+</html>

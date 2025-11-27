@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - d'sis Catering</title>
+    <link rel="stylesheet" href="book.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="js/api.js"></script>
+    <script src="auth.js"></script>
+    <style>
+        .login-container {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 30px;
+            background: var(--card-background);
+            border-radius: 10px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+            border: 1px solid var(--gold-accent);
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--gold-accent);
+        }
+        .login-header h2 {
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #f5f5f5;
+            font-weight: 500;
+        }
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .input-group .icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gold-accent);
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            background: var(--form-input-bg);
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+        }
+        .input-group input:focus {
+            border-color: var(--gold-accent);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.3);
+        }
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            color: #ccc;
+        }
+        .options a {
+            color: var(--gold-accent);
+            text-decoration: none;
+        }
+        .options a:hover {
+            text-decoration: underline;
+        }
+        button[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background: var(--gold-accent);
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button[type="submit"]:hover {
+            background: var(--gold-accent-darker);
+        }
+        .signup {
+            text-align: center;
+            margin-top: 20px;
+            color: #ccc;
+        }
+        .signup a {
+            color: var(--gold-accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .signup a:hover {
+            text-decoration: underline;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+        }
+        .toggle-password:focus {
+            outline: none;
+            color: var(--gold-accent);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <button onclick="history.back()" class="btn btn-outline-secondary" style="background: none; border: 1px solid var(--gold-accent); color: var(--gold-accent); padding: 5px 10px; border-radius: 4px; cursor: pointer;">←</button>
+            <img src="img/logo.png" alt="d'sis Catering Logo" class="header-logo">
+            <div class="logo">d'sis Catering</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="main.html" class="nav-compensate">Home</a></li>
+                <li><a href="menu.html" class="nav-compensate">Menu</a></li>
+                <li><a href="album.html" class="nav-compensate">Design</a></li>
+                <li><a href="other_offers.html" class="nav-compensate">Other Offers</a></li>
+                <li><a href="message.html" class="contact-btn oval-btn"><i class="fas fa-envelope"></i> Messages</a></li>
+                <li><a href="login.html" class="nav-compensate active"><i class="fas fa-user-circle" style="font-size: 24px; color: var(--gold-accent);"></i></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="login-container">
+            <div class="login-header">
+                <h2>Login To Your Account</h2>
+            </div>
+            <form id="customerLoginForm" onsubmit="return handleLogin(event)">
+                <div class="input-group">
+                    <i class="fas fa-envelope icon"></i>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required autocomplete="email">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock icon"></i>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
+                    <button type="button" class="toggle-password" data-target="password" aria-label="Show password" aria-pressed="false">
+                        <i class="fas fa-eye" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="options">
+                    <label><input type="checkbox" name="remember" id="remember" style="margin-right: 5px;"> <span>Remember me</span></label>
+                    <a href="#" class="forgot">Forgot password?</a>
+                </div>
+                <button type="submit">Login Now</button>
+                <div class="signup">
+                    Not a member? <a href="signup.html">Sign up now</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <div class="forgot-password-overlay" id="forgot-password-overlay"></div>
+    <div class="forgot-password-modal" id="forgot-password-modal" role="dialog" aria-modal="true" aria-labelledby="forgot-password-title">
+        <div class="modal-header">
+            <h3 id="forgot-password-title">Reset Password</h3>
+            <button type="button" class="close-modal" aria-label="Close reset password form">&times;</button>
+        </div>
+        <p class="modal-description">Enter your account details to create a new password.</p>
+        <form id="forgot-password-form">
+            <label for="fp-email">Email address</label>
+            <input type="email" id="fp-email" required placeholder="name@example.com">
+
+            <label for="fp-mobile">Mobile number <span class="optional">(optional)</span></label>
+            <input type="tel" id="fp-mobile" maxlength="11" pattern="\d{11}" inputmode="numeric" placeholder="09XXXXXXXXX">
+
+            <label for="fp-password">New password</label>
+            <div class="input-group">
+                <input type="password" id="fp-password" required minlength="6" placeholder="Enter new password">
+                <button type="button" class="toggle-password" data-target="fp-password" aria-label="Show password" aria-pressed="false">
+                    <i class="fas fa-eye" aria-hidden="true"></i>
+                </button>
+            </div>
+ 
+             <label for="fp-confirm-password">Confirm new password</label>
+            <div class="input-group">
+                <input type="password" id="fp-confirm-password" required minlength="6" placeholder="Re-enter new password">
+                <button type="button" class="toggle-password" data-target="fp-confirm-password" aria-label="Show password" aria-pressed="false">
+                    <i class="fas fa-eye" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <button type="submit" class="reset-btn">Reset Password</button>
+        </form>
+    </div>
+
+    <footer>
+
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const forgotLink = document.querySelector('.forgot');
+            const overlay = document.getElementById('forgot-password-overlay');
+            const modal = document.getElementById('forgot-password-modal');
+            const closeBtn = modal?.querySelector('.close-modal');
+            const form = document.getElementById('forgot-password-form');
+            const submitBtn = form?.querySelector('button[type="submit"]');
+
+            if (!forgotLink || !overlay || !modal || !form || !submitBtn) return;
+
+            const openModal = () => {
+                overlay.classList.add('show');
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+                document.getElementById('fp-email').focus();
+            };
+
+            const closeModal = () => {
+                overlay.classList.remove('show');
+                modal.classList.remove('show');
+                document.body.style.overflow = '';
+            };
+
+            forgotLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                openModal();
+            });
+
+            overlay.addEventListener('click', closeModal);
+            closeBtn.addEventListener('click', closeModal);
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('fp-email').value.trim();
+                const mobileNumber = document.getElementById('fp-mobile').value.trim();
+                const newPassword = document.getElementById('fp-password').value;
+                const confirmPassword = document.getElementById('fp-confirm-password').value;
+
+                if (!email || !newPassword || !confirmPassword) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+
+                if (newPassword.length < 6) {
+                    alert('Password must be at least 6 characters long.');
+                    return;
+                }
+
+                if (newPassword !== confirmPassword) {
+                    alert('Passwords do not match.');
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'Updating...';
+
+                try {
+                    await api.forgotPassword({ email, mobileNumber, newPassword });
+                    alert('Password reset successful! You can now log in with your new password.');
+                    form.reset();
+                    closeModal();
+                } catch (error) {
+                    const message = error?.data?.error || error?.message || 'Failed to reset password. Please try again.';
+                    alert(message);
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalText;
+                }
+            });
+
+            // Password show/hide toggle for any .toggle-password button
+            document.querySelectorAll('.toggle-password').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetId = btn.dataset.target;
+                    const input = document.getElementById(targetId);
+                    if (!input) return;
+                    const isHidden = input.type === 'password';
+                    if (isHidden) {
+                        input.type = 'text';
+                        btn.querySelector('i')?.classList.replace('fa-eye', 'fa-eye-slash');
+                        btn.setAttribute('aria-label', 'Hide password');
+                        btn.setAttribute('aria-pressed', 'true');
+                    } else {
+                        input.type = 'password';
+                        btn.querySelector('i')?.classList.replace('fa-eye-slash', 'fa-eye');
+                        btn.setAttribute('aria-label', 'Show password');
+                        btn.setAttribute('aria-pressed', 'false');
+                    }
+                });
+            });
+        });
+    </script>
+    <style>
+        /* Basic positioning for the eye button inside input groups */
+        .input-group{ position: relative; }
+        .input-group .toggle-password{
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #444;
+            padding: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .input-group .toggle-password:focus{ outline: 2px solid #5b9dd9; border-radius: 4px; }
+    </style>
+    
+    <script>
+        // Handle login form submission
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('remember').checked;
+            
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return false;
+            }
+            
+            const loginBtn = event.target.querySelector('button[type="submit"]');
+            const originalText = loginBtn.textContent;
+            
+            try {
+                loginBtn.disabled = true;
+                loginBtn.textContent = 'Logging in...';
+                
+                const success = await auth.login(email, password);
+                
+                if (success) {
+                    // Redirect to admin dashboard after successful login
+                    window.location.href = 'admin/dashboard.html';
+                } else {
+                    alert('Invalid email or password. Please try again.');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('An error occurred during login. Please try again.');
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.textContent = originalText;
+            }
+            
+            return false;
+        }
+    </script>
+</body>
+</html>

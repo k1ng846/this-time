@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Offers - d'sis Catering</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="admin-layout.css">
+    <style>
+        /* Reuse dashboard admin styles for consistent admin UI */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background-color: #f5f5f5; }
+        .header { background: white; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
+        .logo-section { display:flex; align-items:center }
+        .logo-image { width:80px;height:80px;border-radius:50%;margin-right:20px;object-fit:cover }
+        .company-name { font-size:32px;font-weight:bold;color:#333 }
+        .admin-section { text-align:right }
+        .admin-title { font-size:24px;font-weight:bold;color:#333;margin-bottom:10px }
+        .mail-button { background:none;border:2px solid #333;border-radius:50%;width:60px;height:60px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s }
+        .mail-button:hover{background:#333;color:white}
+
+        .main-content { display:flex; min-height: calc(100vh - 120px); }
+        .sidebar { background: linear-gradient(135deg,#6a1b9a,#8e24aa); width:250px; padding:30px 20px; position:relative }
+        .sidebar::before { content: ''; position:absolute; top:0; right:-20px; width:40px; height:100%; background: linear-gradient(135deg,#6a1b9a,#8e24aa); border-radius:0 20px 20px 0 }
+        .sidebar-title { color:white; font-size:28px; font-weight:bold; margin-bottom:30px; text-align:center }
+        .nav-menu { list-style:none }
+        .nav-menu li { margin-bottom:15px }
+        .nav-menu a { color:white; text-decoration:none; padding:12px 15px; display:block; border-radius:8px; transition:background 0.3s }
+        .nav-menu a:hover, .nav-menu a.active { background: rgba(255,255,255,0.2) }
+
+        .content-area { flex:1; padding:30px }
+        .page-title { font-size:32px; font-weight:bold; color:#333; margin-bottom:20px }
+
+        .card { background:white; padding:20px; border-radius:12px; box-shadow:0 4px 6px rgba(0,0,0,0.08); margin-bottom:20px }
+        .form-row { display:flex; gap:12px; margin-bottom:12px }
+        input[type=text], input[type=datetime-local], textarea { flex:1; padding:10px; border:1px solid #ddd; border-radius:6px }
+        textarea{ min-height:100px }
+
+        .offers-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:16px; margin-top:12px }
+        .offer-card { background:#fff; border-radius:8px; padding:12px; border:1px solid #eee; display:flex; flex-direction:column; gap:8px }
+        .offer-actions { margin-top:8px; display:flex; gap:8px; justify-content:flex-end }
+
+        .btn { padding:8px 14px; border:none; border-radius:6px; cursor:pointer; font-weight:600 }
+        .btn-primary { background:#6a1b9a; color:#fff }
+        .btn-danger { background:#dc3545; color:#fff }
+        .btn-secondary { background:#f0f0f0; color:#333 }
+
+        .loading { text-align:center; padding:24px; color:#666 }
+        .error { background:#f8d7da; color:#721c24; padding:12px; border-radius:6px }
+        .success { background:#d4edda; color:#155724; padding:12px; border-radius:6px }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-section">
+            <img src="pics/logo.png" alt="d'sis Catering Logo" class="logo-image">
+            <div class="company-name">d'sis Catering</div>
+        </div>
+        <div class="admin-section">
+            <div class="admin-title">Admin</div>
+            <a class="mail-button" href="profile.html" title="Profile">
+                <i class="fas fa-user-cog"></i>
+            </a>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-title">Admin</div>
+            <ul class="nav-menu">
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="bookings.html"><i class="fas fa-calendar-check"></i> Bookings</a></li>
+                <li><a href="admin_message.html"><i class="fas fa-envelope"></i> Messages</a></li>
+                <li><a href="offers.html" class="active"><i class="fas fa-tags"></i> Offers</a></li>
+                <li><a href="../main.html"><i class="fas fa-home"></i> View Site</a></li>
+                <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <h1 class="page-title">Manage Offers</h1>
+
+            <div id="messages"></div>
+
+            <div class="card">
+                <h3 style="margin-bottom:12px">Create Offer</h3>
+                <form id="offerForm">
+                    <div class="form-row">
+                        <input type="text" id="title" placeholder="Offer title" required>
+                        <input type="text" id="imageUrl" placeholder="Image URL (optional)">
+                    </div>
+                    <div class="form-row">
+                        <input type="datetime-local" id="startAt">
+                        <input type="datetime-local" id="endAt">
+                    </div>
+                    <div class="form-row">
+                        <textarea id="description" placeholder="Description (optional)"></textarea>
+                    </div>
+                    <div style="text-align:right">
+                            <button type="button" id="cancelEdit" class="btn btn-secondary" style="display:none;margin-right:8px">Cancel</button>
+                            <button id="submitBtn" class="btn btn-primary" type="submit">Create Offer</button>
+                        </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom:12px">Existing Offers</h3>
+                <div id="loading" class="loading"><i class="fas fa-spinner fa-spin"></i> Loading offers...</div>
+                <div id="offersContainer" class="offers-grid" style="display:none"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3000/api';
+
+        // Admin guard — redirect non-admins
+        window.addEventListener('load', () => {
+            const userRaw = localStorage.getItem('dsis_user');
+            if (!userRaw) return window.location.href = '../login.html';
+            try {
+                const user = JSON.parse(userRaw);
+                const userType = user.userType || user.user_type;
+                if (userType !== 'admin') return window.location.href = '../main.html';
+            } catch (e) { return window.location.href = '../login.html'; }
+
+            loadOffers();
+        });
+
+        function openMessages(){ window.location.href = 'admin_message.html'; }
+        function logout(){ if(confirm('Logout?')){ localStorage.removeItem('dsis_user'); localStorage.removeItem('dsis_token'); window.location.href = '../login.html'; } }
+
+        function showError(msg){ const m = document.getElementById('messages'); m.innerHTML = `<div class="error">${msg}</div>`; setTimeout(()=>m.innerHTML='',4000); }
+        function showSuccess(msg){ const m = document.getElementById('messages'); m.innerHTML = `<div class="success">${msg}</div>`; setTimeout(()=>m.innerHTML='',3000); }
+
+        async function loadOffers(){
+            try{
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('offersContainer').style.display = 'none';
+                const res = await fetch(`${API_BASE_URL}/offers`);
+                if (!res.ok) throw new Error('Failed to fetch offers');
+                const data = await res.json();
+                const list = data.offers || [];
+                renderOffers(list);
+            }catch(err){
+                console.error(err); showError('Could not load offers.');
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        function renderOffers(list){
+            const container = document.getElementById('offersContainer');
+            container.innerHTML = '';
+            if (!list || list.length === 0){
+                container.innerHTML = '<div style="color:#666">No offers found</div>';
+            } else {
+                list.forEach(o=>{
+                    const card = document.createElement('div'); card.className = 'offer-card';
+                    const title = document.createElement('div'); title.innerHTML = `<strong>${escapeHtml(o.title||'Untitled')}</strong>`;
+                    const desc = document.createElement('div'); desc.textContent = o.description || '';
+                    const dates = document.createElement('div'); dates.style.fontSize='12px'; dates.style.color='#666';
+                    dates.textContent = `Start: ${o.startAt||'n/a'} | End: ${o.endAt||'n/a'}`;
+                    const actions = document.createElement('div'); actions.className='offer-actions';
+                        const edit = document.createElement('button'); edit.className='btn btn-secondary'; edit.textContent='Edit';
+                        edit.onclick = ()=>{
+                            // populate form for editing
+                            editingOfferId = o.id;
+                            document.getElementById('title').value = o.title || '';
+                            document.getElementById('description').value = o.description || '';
+                            document.getElementById('imageUrl').value = o.imageUrl || '';
+                            if (o.startAt) document.getElementById('startAt').value = new Date(o.startAt).toISOString().slice(0,16);
+                            else document.getElementById('startAt').value = '';
+                            if (o.endAt) document.getElementById('endAt').value = new Date(o.endAt).toISOString().slice(0,16);
+                            else document.getElementById('endAt').value = '';
+                            document.getElementById('submitBtn').textContent = 'Update Offer';
+                            document.getElementById('cancelEdit').style.display = 'inline-block';
+                        };
+
+                        const del = document.createElement('button'); del.className='btn btn-danger'; del.textContent='Delete';
+                        del.onclick = async ()=>{
+                            if(!confirm('Delete this offer?')) return;
+                            try{
+                                const r = await fetch(`${API_BASE_URL}/offers/${o.id}`, { method: 'DELETE' });
+                                if (!r.ok) throw new Error('Delete failed');
+                                showSuccess('Offer deleted');
+                                loadOffers();
+                            }catch(er){ console.error(er); showError('Failed to delete offer'); }
+                        };
+                        actions.appendChild(edit);
+                        actions.appendChild(del);
+                    card.appendChild(title); card.appendChild(desc); card.appendChild(dates); card.appendChild(actions);
+                    container.appendChild(card);
+                });
+            }
+            document.getElementById('loading').style.display = 'none';
+            container.style.display = 'grid';
+        }
+
+        // Create or Update offer
+        let editingOfferId = null;
+        const submitBtn = document.getElementById('submitBtn');
+        const cancelBtn = document.getElementById('cancelEdit');
+
+        cancelBtn.addEventListener('click', ()=>{
+            editingOfferId = null;
+            document.getElementById('offerForm').reset();
+            submitBtn.textContent = 'Create Offer';
+            cancelBtn.style.display = 'none';
+        });
+
+        document.getElementById('offerForm').addEventListener('submit', async (e)=>{
+            e.preventDefault();
+            const payload = {
+                title: document.getElementById('title').value.trim(),
+                description: document.getElementById('description').value.trim(),
+                imageUrl: document.getElementById('imageUrl').value.trim(),
+                startAt: document.getElementById('startAt').value ? new Date(document.getElementById('startAt').value).toISOString() : null,
+                endAt: document.getElementById('endAt').value ? new Date(document.getElementById('endAt').value).toISOString() : null,
+                active: true
+            };
+            try{
+                if (editingOfferId){
+                    const res = await fetch(`${API_BASE_URL}/offers/${editingOfferId}`, { method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+                    if (!res.ok) throw new Error('Update failed');
+                    showSuccess('Offer updated');
+                } else {
+                    const res = await fetch(`${API_BASE_URL}/offers`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
+                    if (!res.ok) throw new Error('Create failed');
+                    showSuccess('Offer created');
+                }
+                document.getElementById('offerForm').reset();
+                editingOfferId = null;
+                submitBtn.textContent = 'Create Offer';
+                cancelBtn.style.display = 'none';
+                loadOffers();
+            }catch(err){ console.error(err); showError(editingOfferId ? 'Failed to update offer' : 'Failed to create offer'); }
+        });
+
+        // small helper to escape HTML
+        function escapeHtml(s){ return String(s||'').replace(/[&<>\"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":"&#39;"}[c]; }); }
+    </script>
+</body>
+</html>

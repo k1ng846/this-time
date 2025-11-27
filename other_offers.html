@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Limited Offers - d'sis Catering</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="other_offers.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <style>
+            /* Ensure footer stays at bottom when content is short */
+            html, body { height: 100%; }
+            body { display: flex; flex-direction: column; min-height: 100vh; }
+            main { flex: 1 0 auto; }
+            footer { flex-shrink: 0; }
+        </style>
+</head>
+<body>
+
+    <!-- Header (copied from main.html for consistent nav) -->
+    <header>
+        <div class="logo-container">
+                <button onclick="history.back()" class="btn btn-outline-secondary">←</button>
+                <img src="img/logo.png" class="header-logo">
+                <div class="logo">d'sis Catering</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="main.html" class="nav-compensate">Home</a></li>
+                <li><a href="menu.html" class="nav-compensate">Menu</a></li>
+                <li><a href="album.html" class="nav-compensate">Design</a></li>
+                <li><a href="other_offers.html" class="nav-compensate">Other Offers</a></li>
+                <li><a href="message.html" class="contact-btn oval-btn"><i class="fas fa-envelope"></i> Messages</a></li>
+                <li><a href="login.html" class="nav-compensate"><i class="fas fa-user-circle" style="font-size: 24px;"></i></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="py-5">
+        <div class="container">
+            <h1 class="text-center mb-4" style="font-size:45px;">Limited Offers</h1>
+
+            <div id="offers-container">
+                <div class="text-center text-muted">Loading active offers...</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer (copied from main.html) -->
+    <footer>
+            <div class="container footer-content">
+                    <p>d'sis Catering</p>
+                    <div class="footer-links">
+                            <div>
+                                    <h4>Explore</h4>
+                                    <a href="main.html">Home</a>
+                                    <a href="menu.html">Menu</a>
+                                    <a href="album.html">Design</a>
+                                    <a href="other_offers.html">Other Offers</a>
+                            </div>
+                            <div>
+                                    <h4>Connect</h4>
+                                    <a href="https://www.facebook.com/kykzj" target="_blank">Facebook</a>
+                                    <a>Email</a>
+                            </div>
+                            <div>
+                                    <h4>Contact</h4>
+                                    <a>+63 908 342 2706</a>
+                                    <a>dsis_catering28@yahoo.com</a>
+                                <a>San Lorenzo,Mexico,Pampanga,San Fernando, Philippines</a>
+                            </div>
+                    </div>
+                    <div class="social-icons">
+                            <a href="https://www.facebook.com/kykzj" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+            </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        // Load active offers and render them into the page
+        const API = 'http://localhost:3000/api';
+
+        function formatDateShort(iso){
+            if (!iso) return '—';
+            try{ const d = new Date(iso); return d.toLocaleString(); }catch(e){ return iso }
+        }
+
+        function createOfferCard(o){
+            const wrapper = document.createElement('div');
+            wrapper.className = 'package-card mb-4 p-3 d-flex align-items-center';
+            wrapper.style.gap = '16px';
+
+            const imgDiv = document.createElement('div');
+            imgDiv.style.width = '160px'; imgDiv.style.flex = '0 0 160px';
+            if (o.imageUrl){
+                const img = document.createElement('img'); img.src = o.imageUrl; img.alt = o.title || 'Offer'; img.style.width = '100%'; img.style.height = '100px'; img.style.objectFit = 'cover'; img.style.borderRadius='8px'; imgDiv.appendChild(img);
+            } else {
+                imgDiv.innerHTML = '<div style="width:100%;height:100px;background:#f2f2f2;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#999">No Image</div>';
+            }
+
+            const meta = document.createElement('div'); meta.style.flex='1';
+            const title = document.createElement('h3'); title.textContent = o.title || 'Untitled Offer';
+            const desc = document.createElement('p'); desc.className = 'subheading'; desc.textContent = o.description || '';
+            const valid = document.createElement('p'); valid.className = 'price text-muted'; valid.style.fontSize='0.95rem'; valid.textContent = `Valid: ${o.startAt?formatDateShort(o.startAt):'Now'} — ${o.endAt?formatDateShort(o.endAt):'Until removed'}`;
+
+            meta.appendChild(title); meta.appendChild(desc); meta.appendChild(valid);
+
+            const actions = document.createElement('div'); actions.style.flex='0 0 140px'; actions.style.textAlign='center';
+            const btn = document.createElement('a'); btn.className = 'btn btn-book btn-primary'; btn.href = `book.html${o.id?('?offerId='+encodeURIComponent(o.id)):''}`; btn.textContent = 'Book Now!';
+            actions.appendChild(btn);
+
+            wrapper.appendChild(imgDiv); wrapper.appendChild(meta); wrapper.appendChild(actions);
+            return wrapper;
+        }
+
+        async function loadOffers(){
+            const container = document.getElementById('offers-container');
+            container.innerHTML = '<div class="text-center text-muted">Loading active offers...</div>';
+            try{
+                const res = await fetch(API + '/offers/active');
+                if (!res.ok) throw new Error('Network response was not ok');
+                const data = await res.json();
+                const list = data.offers || [];
+                container.innerHTML = '';
+                if (list.length === 0){
+                    container.innerHTML = '<div class="text-center text-white">No active offers at the moment.</div>';
+                    return;
+                }
+                list.forEach(o=>{ container.appendChild(createOfferCard(o)); });
+            }catch(err){
+                console.error(err);
+                container.innerHTML = '<div class="text-center text-danger">Failed to load offers.</div>';
+            }
+        }
+
+        loadOffers();
+        // Refresh every minute to pick up new offers
+        setInterval(loadOffers, 60*1000);
+    </script>
+</body>
+</html>

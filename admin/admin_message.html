@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Messages - d'sis Catering</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="admin-layout.css">
+    <style>
+        /* Simple Student-Level CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-right: 20px;
+            object-fit: cover;
+        }
+
+        .company-name {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .admin-section {
+            text-align: right;
+        }
+
+        .admin-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .mail-button {
+            background: none;
+            border: 2px solid #333;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .mail-button:hover {
+            background: #333;
+            color: white;
+        }
+
+        .mail-button i {
+            font-size: 24px;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            min-height: calc(100vh - 120px);
+            position: relative;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: linear-gradient(135deg, #6a1b9a, #8e24aa);
+            width: 250px;
+            padding: 30px 20px;
+            position: relative;
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -20px;
+            width: 40px;
+            height: 100%;
+            background: linear-gradient(135deg, #6a1b9a, #8e24aa);
+            border-radius: 0 20px 20px 0;
+        }
+
+        .sidebar-title {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-bottom: 15px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 15px;
+            display: block;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            margin-left: 200px;
+            position: relative;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        /* Message Cards */
+        .message-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-left: 4px solid #6a1b9a;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .message-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .message-avatar {
+            width: 50px;
+            height: 50px;
+            background: #6a1b9a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .message-details h4 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .message-details p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .message-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-unread {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-read {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-replied {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .message-content {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .message-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: #6a1b9a;
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.8;
+        }
+
+        /* Reply Form */
+        .reply-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .reply-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+            min-height: 100px;
+            margin-bottom: 15px;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Loading and Error States */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+
+        /* Tabs Sidebar Style - Like customer messaging */
+        .tabs-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-bottom: 0;
+            border-bottom: none;
+            width: 200px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: white;
+            border-right: 2px solid #e0e0e0;
+            height: 100%;
+            padding-top: 20px;
+        }
+
+        .tab-button {
+            padding: 15px 20px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            border-bottom: none;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tab-button.active {
+            color: #6a1b9a;
+            border-left-color: #6a1b9a;
+            background: rgba(106, 27, 154, 0.05);
+        }
+
+        .tab-button:hover {
+            color: #6a1b9a;
+            background: rgba(106, 27, 154, 0.05);
+        }
+
+        .tab-button i {
+            font-size: 18px;
+        }
+
+        /* Customer Summary Cards */
+        .customer-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 4px solid #6a1b9a;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .customer-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+
+        .customer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+
+        .customer-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .message-count {
+            background: #6a1b9a;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .customer-email {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .customer-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 13px;
+            color: #999;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stat-badge {
+            background: #e0e0e0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .status-badge-unread {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-badge-read {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge-replied {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        /* Customer Messages Grid */
+        .customer-messages {
+            display: none;
+        }
+
+        .customer-messages.active {
+            display: block;
+        }
+
+        /* Customers List */
+        .customers-list {
+            display: block;
+        }
+
+        .customers-list.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-section">
+            <img src="pics/logo.png" alt="d'sis Catering Logo" class="logo-image">
+            <div class="company-name">d'sis Catering</div>
+        </div>
+        <div class="admin-section">
+            <div class="admin-title">Admin</div>
+            <a class="mail-button" href="profile.html" title="Profile">
+                <i class="fas fa-user-cog"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-title">Messages</div>
+            <ul class="nav-menu">
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="bookings.html"><i class="fas fa-calendar-check"></i> Bookings</a></li>
+                <li><a href="admin_message.html" class="active"><i class="fas fa-envelope"></i> Messages</a></li>
+                <li><a href="offers.html"><i class="fas fa-tags"></i> Offers</a></li>
+                <li><a href="../main.html"><i class="fas fa-home"></i> View Site</a></li>
+                <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Tabs Sidebar - Like customer messaging -->
+            <div class="tabs-container" id="tabs-container" style="display: none;">
+                <button class="tab-button active" onclick="switchTab(event, 'customers')">
+                    <i class="fas fa-users"></i>
+                    <span>Customers</span>
+                    <span id="customer-count" style="margin-left: auto; background: #6a1b9a; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">0</span>
+                </button>
+                <button class="tab-button" onclick="switchTab(event, 'all-messages')">
+                    <i class="fas fa-envelope"></i>
+                    <span>Messages</span>
+                    <span id="message-count" style="margin-left: auto; background: #6a1b9a; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">0</span>
+                </button>
+            </div>
+            
+            <h1 class="page-title">Customer Messages</h1>
+            
+            <div id="loading-message" class="loading">
+                <i class="fas fa-spinner fa-spin"></i> Loading messages...
+            </div>
+            
+            <div id="error-message" class="error" style="display: none;"></div>
+            
+            <!-- Customers Summary View -->
+            <div id="customers-view" class="customers-list">
+                <div id="customers-container">
+                    <!-- Customer cards will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- All Messages View -->
+            <div id="all-messages-view" class="customer-messages">
+                <div id="messages-container">
+                    <!-- All messages will be loaded here -->
+                </div>
+            </div>
+            
+            <div id="empty-state" class="empty-state" style="display: none;">
+                <i class="fas fa-envelope-open"></i>
+                <h3>No messages yet</h3>
+                <p>Customer messages will appear here when they contact you.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script>
+        // Simple Admin Messages - Student Level
+        const API_BASE_URL = 'http://localhost:3000/api';
+        let allMessages = [];
+        let currentTab = 'customers'; // Start with customers tab
+
+        // Check if admin is logged in when page loads
+        window.addEventListener('load', function() {
+            const userRaw = localStorage.getItem('dsis_user');
+            if (!userRaw) {
+                window.location.href = '../login.html';
+                return;
+            }
+
+            try {
+                const user = JSON.parse(userRaw);
+                const userType = user.userType || user.user_type;
+                if (userType !== 'admin') {
+                    window.location.href = '../main.html';
+                    return;
+                }
+            } catch (e) {
+                window.location.href = '../login.html';
+                return;
+            }
+
+            loadMessages();
+        });
+
+        // Load messages from backend
+        async function loadMessages() {
+            try {
+                console.log('Loading messages...');
+                console.log('API object:', api);
+                const result = await api.adminGetAllMessages();
+                console.log('API result:', result);
+                allMessages = result.messages || [];
+                
+                document.getElementById('loading-message').style.display = 'none';
+                
+                if (allMessages.length > 0) {
+                    document.getElementById('tabs-container').style.display = 'flex';
+                    document.getElementById('customers-view').style.display = 'block';
+                    displayCustomers(allMessages);
+                    displayMessages(allMessages);
+                    updateCounts();
+                } else {
+                    document.getElementById('empty-state').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error loading messages:', error);
+                showError('Failed to load messages: ' + error.message);
+            }
+        }
+
+        // Switch between tabs
+        function switchTab(event, tab) {
+            currentTab = tab;
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.tab-button').classList.add('active');
+            
+            // Update views
+            if (tab === 'customers') {
+                document.getElementById('customers-view').style.display = 'block';
+                document.getElementById('all-messages-view').style.display = 'none';
+            } else {
+                document.getElementById('customers-view').style.display = 'none';
+                document.getElementById('all-messages-view').style.display = 'block';
+            }
+        }
+
+        // Update tab counts
+        function updateCounts() {
+            const uniqueCustomers = new Set(allMessages.map(m => m.userEmail || m.customerEmail)).size;
+            document.getElementById('customer-count').textContent = uniqueCustomers;
+            document.getElementById('message-count').textContent = allMessages.length;
+        }
+
+        // Compile and display customers with message counts
+        function displayCustomers(messages) {
+            const container = document.getElementById('customers-container');
+            
+            if (!messages || messages.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            // Group messages by customer email
+            const customerMap = {};
+            messages.forEach(message => {
+                const email = message.userEmail || message.customerEmail || 'unknown';
+                if (!customerMap[email]) {
+                    customerMap[email] = {
+                        email: email,
+                        name: message.userName || message.customerName || 'Unknown Customer',
+                        messages: [],
+                        unread: 0,
+                        read: 0,
+                        replied: 0
+                    };
+                }
+                customerMap[email].messages.push(message);
+                
+                const status = (message.messageStatus || 'unread').toLowerCase();
+                if (status === 'unread') customerMap[email].unread++;
+                else if (status === 'read') customerMap[email].read++;
+                else if (status === 'replied') customerMap[email].replied++;
+            });
+
+            // Convert to array and sort by total messages
+            const customers = Object.values(customerMap).sort((a, b) => b.messages.length - a.messages.length);
+
+            let html = '';
+            customers.forEach((customer, index) => {
+                const lastMessage = customer.messages[customer.messages.length - 1];
+                const lastMessageDate = formatDate(lastMessage.createdAt);
+                const hasUnread = customer.unread > 0;
+                
+                html += `
+                    <div class="customer-card" onclick="expandCustomer(this, ${index})">
+                        <div class="customer-header">
+                            <div>
+                                <div class="customer-name">${customer.name}</div>
+                                <div class="customer-email">${customer.email}</div>
+                            </div>
+                            <div class="message-count">${customer.messages.length} messages</div>
+                        </div>
+                        
+                        <div class="customer-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>Last: ${lastMessageDate}</span>
+                            </div>
+                            ${customer.unread > 0 ? `
+                                <div class="stat-item">
+                                    <span class="stat-badge status-badge-unread">${customer.unread} unread</span>
+                                </div>
+                            ` : ''}
+                            ${customer.read > 0 ? `
+                                <div class="stat-item">
+                                    <span class="stat-badge status-badge-read">${customer.read} read</span>
+                                </div>
+                            ` : ''}
+                            ${customer.replied > 0 ? `
+                                <div class="stat-item">
+                                    <span class="stat-badge status-badge-replied">${customer.replied} replied</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                        
+                        <div id="customer-messages-${index}" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee;">
+                            <!-- Customer messages will be inserted here -->
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // Expand customer to show all their messages
+        function expandCustomer(element, customerIndex) {
+            const messagesDiv = element.querySelector(`#customer-messages-${customerIndex}`);
+            const isExpanded = messagesDiv.style.display !== 'none';
+            
+            if (isExpanded) {
+                messagesDiv.style.display = 'none';
+            } else {
+                // Get customer email from element
+                const email = element.querySelector('.customer-email').textContent.trim();
+                const customerMessages = allMessages.filter(m => (m.userEmail || m.customerEmail) === email);
+                
+                let html = '';
+                customerMessages.forEach(message => {
+                    const initials = getInitials(message.userName || message.customerName || 'Unknown');
+                    const status = message.messageStatus || 'unread';
+                    const statusClass = `status-${status}`;
+                    
+                    html += `
+                        <div style="background: #f9f9f9; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                                <div>
+                                    <strong>${message.subject}</strong>
+                                    <div style="font-size: 13px; color: #999; margin-top: 3px;">${formatDate(message.createdAt)}</div>
+                                </div>
+                                <span class="message-status ${statusClass}">${status.toUpperCase()}</span>
+                            </div>
+                            <p style="margin: 8px 0; color: #555;">${message.messageContent || message.message || ''}</p>
+                            ${message.adminResponse ? `
+                                <div style="background: #e3f2fd; padding: 8px; border-radius: 4px; margin: 8px 0; font-size: 13px;">
+                                    <strong>Your reply:</strong> ${message.adminResponse}
+                                </div>
+                            ` : ''}
+                            <div style="display: flex; gap: 8px; margin-top: 8px;">
+                                ${status !== 'replied' ? `
+                                    <button class="btn btn-primary" onclick="showReplyForm(${message.id})" style="padding: 6px 12px; font-size: 13px;">
+                                        <i class="fas fa-reply"></i> Reply
+                                    </button>
+                                ` : ''}
+                                <button class="btn btn-success" onclick="markAsRead(${message.id})" style="padding: 6px 12px; font-size: 13px;">
+                                    <i class="fas fa-check"></i> Read
+                                </button>
+                                <button class="btn btn-danger" onclick="deleteMessage(${message.id})" style="padding: 6px 12px; font-size: 13px;">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                            <div id="reply-form-${message.id}" class="reply-form">
+                                <textarea id="reply-text-${message.id}" placeholder="Type your reply here..."></textarea>
+                                <div>
+                                    <button class="btn btn-primary" onclick="sendReply(${message.id})">Send Reply</button>
+                                    <button class="btn" onclick="hideReplyForm(${message.id})" style="background: #6c757d; color: white;">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                messagesDiv.innerHTML = html;
+                messagesDiv.style.display = 'block';
+            }
+        }
+
+        // Display all messages (for "All Messages" tab)
+        function displayMessages(messages) {
+            const container = document.getElementById('messages-container');
+            
+            if (!messages || messages.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = '';
+            messages.forEach(message => {
+                const customerName = message.customerName || message.userName || 'Unknown Customer';
+                const customerEmail = message.customerEmail || message.userEmail || '';
+                const messageContent = message.message || message.messageContent || '';
+                const initials = getInitials(customerName);
+                const status = message.messageStatus || 'unread';
+                const statusClass = `status-${status}`;
+                const formattedDate = formatDate(message.createdAt);
+                
+                html += `
+                    <div class="message-card">
+                        <div class="message-header">
+                            <div class="message-info">
+                                <div class="message-avatar">${initials}</div>
+                                <div class="message-details">
+                                    <h4>${customerName}</h4>
+                                    <p>${customerEmail} • ${formattedDate}</p>
+                                </div>
+                            </div>
+                            <div class="message-status ${statusClass}">${status.toUpperCase()}</div>
+                        </div>
+                        
+                        <div class="message-content">
+                            <strong>Subject:</strong> ${message.subject}<br><br>
+                            ${messageContent}
+                        </div>
+                        
+                        ${message.adminResponse || message.reply ? `
+                            <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                                <strong>Your Reply:</strong><br>
+                                ${message.adminResponse || message.reply}
+                            </div>
+                        ` : ''}
+                        
+                        <div class="message-actions">
+                            ${status !== 'replied' ? `
+                                <button class="btn btn-primary" onclick="showReplyForm(${message.id})">
+                                    <i class="fas fa-reply"></i> Reply
+                                </button>
+                            ` : ''}
+                            <button class="btn btn-success" onclick="markAsRead(${message.id})">
+                                <i class="fas fa-check"></i> Mark as Read
+                            </button>
+                            <button class="btn btn-danger" onclick="deleteMessage(${message.id})">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                        
+                        <div id="reply-form-${message.id}" class="reply-form">
+                            <h4>Reply to ${customerName}</h4>
+                            <textarea id="reply-text-${message.id}" placeholder="Type your reply here..."></textarea>
+                            <div>
+                                <button class="btn btn-primary" onclick="sendReply(${message.id})">Send Reply</button>
+                                <button class="btn" onclick="hideReplyForm(${message.id})" style="background: #6c757d; color: white;">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // Get initials from name
+        function getInitials(name) {
+            return name.split(' ').map(n => n[0]).join('').toUpperCase();
+        }
+
+        // Format date for display
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 1) return 'Yesterday';
+            if (diffDays < 7) return `${diffDays} days ago`;
+            return date.toLocaleDateString();
+        }
+
+        // Show reply form
+        function showReplyForm(messageId) {
+            document.getElementById(`reply-form-${messageId}`).style.display = 'block';
+        }
+
+        // Hide reply form
+        function hideReplyForm(messageId) {
+            document.getElementById(`reply-form-${messageId}`).style.display = 'none';
+            document.getElementById(`reply-text-${messageId}`).value = '';
+        }
+
+        // Send reply
+        async function sendReply(messageId) {
+            const replyText = document.getElementById(`reply-text-${messageId}`).value.trim();
+            
+            if (!replyText) {
+                alert('Please enter a reply message.');
+                return;
+            }
+            
+            try {
+                await api.adminRespondToMessage(messageId, replyText);
+                const updated = allMessages.map(m => m.id === messageId ? {
+                    ...m,
+                    adminResponse: replyText,
+                    messageStatus: 'replied'
+                } : m);
+                allMessages = updated;
+                displayCustomers(allMessages);
+                displayMessages(allMessages);
+                updateCounts();
+                hideReplyForm(messageId);
+                showSuccess('Reply sent successfully!');
+            } catch (e) {
+                console.error('Error sending reply:', e);
+                showError('Failed to send reply');
+            }
+        }
+
+        // Mark message as read
+        async function markAsRead(messageId) {
+            try {
+                await api.adminUpdateMessageStatus(messageId, 'read');
+                allMessages = allMessages.map(m => m.id === messageId ? { ...m, messageStatus: 'read' } : m);
+                displayCustomers(allMessages);
+                displayMessages(allMessages);
+                updateCounts();
+                showSuccess('Message marked as read.');
+            } catch (e) {
+                showError('Failed to update status');
+            }
+        }
+
+        // Delete message
+        async function deleteMessage(messageId) {
+            if (confirm('Are you sure you want to delete this message?')) {
+                try {
+                    allMessages = allMessages.filter(m => m.id !== messageId);
+                    displayCustomers(allMessages);
+                    displayMessages(allMessages);
+                    updateCounts();
+                    showSuccess('Message deleted successfully.');
+                } catch (e) {
+                    console.error('Error deleting message:', e);
+                    showError('Failed to delete message');
+                }
+            }
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('dsis_user');
+                localStorage.removeItem('dsis_token');
+                window.location.href = '../login.html';
+            }
+        }
+
+        // Show error message
+        function showError(message) {
+            document.getElementById('loading-message').style.display = 'none';
+            document.getElementById('error-message').style.display = 'block';
+            document.getElementById('error-message').textContent = message;
+        }
+
+        // Show success message
+        function showSuccess(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success';
+            successDiv.textContent = message;
+            document.querySelector('.content-area').insertBefore(successDiv, document.querySelector('.page-title'));
+            
+            setTimeout(() => {
+                successDiv.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

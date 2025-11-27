@@ -1,0 +1,732 @@
+/* === COLOR VARIABLES === */
+:root {
+    /* Existing accent colors */
+    --royal-blue: #007bff8f; /* Vibrant blue */
+    --gold-accent: #d4af37; /* Gold accent */
+    
+    /* BACKGROUND COLORS */
+    --body-start-color: #000000fd; /* Dark Gray (New Start of Body Gradient) */ 
+    --header-footer-bg: #111010; /* Lighter charcoal for high contrast header/footer */
+    --card-background: #111010; /* Dark grey for card backgrounds */
+
+    /* NEW: Darker shades for button hover effects */
+    --royal-blue-darker: #0056b3; /* Darker Royal Blue */
+    --gold-accent-darker: #b3902f; /* Darker Gold Accent */
+}
+
+/* === UNIVERSAL RESET & COMMON BODY === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Main font principle */
+    font-family: Arial, sans-serif; 
+}
+
+body {
+    /* Main body background: starts very dark and transitions to a slightly lighter dark color */
+    background: linear-gradient(180deg, var(--body-start-color) 0%, #302d2d 100%);
+    background-attachment: fixed;
+    /* Text color for the body is light for contrast */
+    color: #f0f0f0; 
+    line-height: 1.6;
+    padding-top: 100px; /* For fixed header */
+    min-height: 100vh;
+}
+
+/* === COMMON HEADER === */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    /* Uses the lighter charcoal for contrast (kept dark) */
+    background-color: var(--header-footer-bg); 
+    /* Gold border for the bottom of the header - Thicker border is here */
+    border-bottom: 3px solid var(--gold-accent); 
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.header-logo {
+    width: 70px;
+    height: 70px;
+    margin-right: 15px;
+}
+
+/* --- UPDATED FONT STYLE FOR HEADER LOGO (.logo) --- */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white; 
+    /* APPLIED CAROUSEL FONT */
+    font-style: italic;
+    font-family: Georgia, 'Times New Roman', Times, serif; 
+}
+
+/* === COMMON NAVIGATION === */
+header nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-weight: 500;
+    padding: 5px 0;
+    align-items: center;
+    position: relative;
+}
+
+/* Navigation Dropdown Styles */
+.nav-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.nav-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 15px;
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+}
+
+.nav-dropdown-toggle:hover {
+    color: var(--gold-accent);
+}
+
+.nav-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #1f1f1f;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 0;
+    padding: 5px 0;
+    list-style: none;
+}
+
+.nav-dropdown:hover .nav-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nav-dropdown-menu .dropdown-link {
+    display: block;
+    padding: 10px 20px;
+    color: #f0f0f0;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-size: 0.9em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nav-dropdown-menu .dropdown-link:last-child {
+    border-bottom: none;
+}
+
+.nav-dropdown-menu .dropdown-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--gold-accent);
+    padding-left: 25px;
+}
+
+.nav-dropdown-toggle i {
+    font-size: 0.7em;
+    transition: transform 0.3s ease;
+    margin-left: 5px;
+}
+
+.nav-dropdown:hover .nav-dropdown-toggle i {
+    transform: rotate(180deg);
+}
+
+/* Adjust the main navigation links */
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+    transition: color 0.3s ease;
+}
+
+header nav ul li a:hover {
+    color: var(--gold-accent);
+}
+
+/* Hide navigation on login page */
+.login-page header nav,
+.login-page .user-menu-item {
+    display: none !important;
+}
+
+/* NEW OVAL BUTTON STYLE - Key for the shape */
+.oval-btn {
+    /* Key for the oval shape: sets the border-radius to a large value */
+    border-radius: 50px !important; 
+    padding: 10px 25px; /* Increase padding for a more pronounced oval */
+}
+
+/* --- .contact-btn (Royal Blue - Messages Button) --- */
+.contact-btn {
+    background-color: var(--royal-blue); 
+    color: #fff !important;
+    padding: 8px 15px;
+    border-radius: 5px; /* Default for non-oval, overridden by .oval-btn */
+    border: 1px solid var(--royal-blue);
+    font-weight: bold;
+}
+
+.contact-btn.oval-btn {
+    /* Re-adjust padding for the navigation button */
+    padding: 8px 20px;
+}
+
+.contact-btn:hover {
+    /* Darker shade of Royal Blue */
+    background-color: var(--royal-blue-darker); 
+    color: #fff !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); 
+    border-color: var(--royal-blue-darker);
+}
+
+.btn-outline-secondary { /* For the back arrow button and user icon */
+    font-size: 24px;
+    padding: 0px 12px;
+    border-radius: 6px;
+    border: none;
+    background-color: transparent;
+    color: white;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.btn-outline-secondary:hover {
+    color: #ccc;
+    text-shadow: 0 0 5px var(--gold-accent); /* Subtle gold glow/shadow */
+}
+
+/* --- .btn-dark (Dark background/gold text - Book Button) --- */
+.btn-dark {
+    background-color: var(--card-background); 
+    color: var(--gold-accent); /* Gold Text */
+    border: 1px solid var(--gold-accent);
+}
+
+.btn-dark.oval-btn {
+      /* Ensures the large button padding is maintained for the oval shape */
+    padding: 10px 30px; 
+}
+
+.btn-dark:hover {
+    background-color: #000000; 
+    color: var(--gold-accent);
+    border: 1px solid var(--gold-accent-darker);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6); 
+}
+
+/* --- .btn-secondary: Uses Gold background/black text --- */
+.btn-secondary {
+    background-color: var(--gold-accent); /* Gold Button */
+    color: #000; /* Black text */
+    border: 1px solid var(--gold-accent);
+}
+
+.btn-secondary:hover {
+    background-color: var(--gold-accent-darker); 
+    color: #000;
+    border: 1px solid var(--gold-accent-darker);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* === COMMON FOOTER === */
+footer {
+    /* Uses the lighter charcoal for contrast (kept dark) */
+    background-color: var(--header-footer-bg); 
+    color: #f5f5f5;
+    padding: 40px 50px;
+    /* Gold border for the top of the footer - Thicker border is here */
+    border-top: 3px solid var(--gold-accent);
+    margin-top: 60px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.footer-content > p {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: var(--gold-accent); /* Gold Brand Name */
+}
+
+.footer-links {
+    display: flex;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
+.footer-links div {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-links h4 {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: var(--royal-blue); /* Royal Blue Headers */
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #ccc;
+    font-size: 14px;
+    margin-bottom: 8px;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #fff;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.social-icons a {
+    color: #ccc;
+    font-size: 20px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+    color: var(--royal-blue); /* Royal Blue social icons on hover */
+}
+
+/* === COMMON UTILITIES === */
+.container { /* Basic container for consistent padding on page content */
+    width: 90%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.text-center { text-align: center; }
+.mb-1 { margin-bottom: 0.25rem !important; }
+.mb-4 { margin-bottom: 1.5rem !important; }
+.mt-4 { margin-top: 1.5rem !important; }
+.mt-5 { margin-top: 3rem !important; }
+.py-4 { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
+.py-5 { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+
+
+/* --- Menu Page STYLING (The core changes for the menu page) --- */
+
+.menu-hero {
+    background-image: url(img/cater3.png);
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 50px 0;
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.menu-hero::before { 
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 1;
+}
+
+.menu-hero h1, .menu-hero p {
+    position: relative; 
+    z-index: 2;
+}
+
+/* APPLIED CAROUSEL FONT */
+.menu-hero h1 {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-style: italic;
+    font-family: Georgia, 'Times New Roman', Times, serif; 
+    color: var(--gold-accent); /* Highlight the title with gold */
+    text-shadow: 2px 2px 4px black;
+}
+
+.menu-hero p {
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto;
+    color: #f0f0f0;
+    text-shadow: 1px 1px 2px black;
+}
+
+.menu-page-content {
+    padding-bottom: 40px;
+}
+
+.menu-category {
+    margin-bottom: 50px;
+    padding: 20px;
+    /* Uses the dark card background for category sections */
+    background-color: var(--card-background); 
+    border-radius: 10px;
+    /* Subtle gold border/shadow to fit the theme */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    border: 1px solid var(--gold-accent);
+}
+
+/* APPLIED CAROUSEL FONT */
+.menu-category h2 {
+    font-size: 2.5rem;
+    /* Uses gold accent color */
+    color: var(--gold-accent);
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    /* Gold accent line */
+    border-bottom: 2px solid var(--gold-accent); 
+    text-align: center;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-style: italic;
+}
+
+/* * THE FIX FOR SPACING: Back to 30px gap, 30px margin-bottom for clearer separation 
+*/
+.menu-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    /* Standard gap for space between cards (horizontal and vertical) */
+    gap: 30px; 
+    /* Added bottom margin to clearly separate rows of cards (like in the Dishes section) */
+    margin-bottom: 30px; 
+}
+
+/* Ensures the very last row in a category doesn't have an unnecessary large margin below it */
+.menu-category .menu-items-grid:last-child {
+    margin-bottom: 0;
+}
+
+.menu-item {
+    /* Uses the dark card background for individual items */
+    background-color: #1a1a1a; 
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border 0.2s ease-in-out;
+    border: 1px solid #333; /* Subtle border for definition */
+}
+
+.menu-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.7);
+    border: 1px solid var(--royal-blue); /* Royal Blue hover border */
+}
+
+.menu-item img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+/* * === SPACING FIX FOR MENU ITEM CONTENT === */
+.menu-item-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    /* Fix: Spreads content vertically within the flex container to ensure alignment */
+    justify-content: space-between; 
+}
+
+.menu-item-content h3 {
+    font-size: 1.4rem;
+    /* Uses Royal Blue accent color */
+    color: var(--royal-blue); 
+    margin-bottom: 8px;
+}
+
+.menu-item-content .description {
+    font-size: 0.95rem;
+    /* Light text color for readability on dark background */
+    color: #ccc; 
+    margin-bottom: 12px;
+    /* FIX: Ensures all descriptions take up available space for uniform card height */
+    flex-grow: 1; 
+}
+
+.menu-item-content .price {
+    font-size: 1.1rem;
+    font-weight: bold;
+    /* Uses Gold accent color for price */
+    color: var(--gold-accent); 
+    text-align: right;
+}
+
+/* === COMMON RESPONSIVE ADJUSTMENTS === */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        padding: 15px 20px;
+        align-items: flex-start;
+    }
+    .logo-container{
+        margin-bottom: 10px;
+    }
+    nav ul {
+        flex-direction: column;
+        width: 100%;
+        margin-top: 10px;
+        padding-left: 0;
+    }
+    nav ul li {
+        margin-left: 0;
+        margin-bottom: 10px;
+        width: 100%;
+        text-align: left;
+    }
+    nav ul li a {
+        display: block;
+        padding: 10px 0;
+    }
+    .contact-btn {
+        width: auto;
+        text-align: center;
+        display: inline-block;
+    }
+
+    body {
+        padding-top: 220px; /* Increased for taller stacked header */
+    }
+
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .footer-links {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        width: 100%;
+    }
+    .footer-links div {
+        align-items: center;
+    }
+    .social-icons {
+        margin-top: 20px;
+        justify-content: center;
+    }
+    
+    /* Responsive adjustments for menu page */
+    .menu-hero h1 {
+        font-size: 2.2rem;
+    }
+    .menu-category h2 {
+        font-size: 1.8rem;
+    }
+    .menu-item-content h3 {
+        font-size: 1.2rem;
+    }
+    .menu-items-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Responsive adjustment for dropdown position on small screens */
+    .user-dropdown-menu {
+        left: 0; /* Align dropdown to the left of the button in mobile view */
+        right: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 20px;
+    }
+    .header-logo {
+        width: 50px;
+        height: 50px;
+    }
+    body {
+        padding-top: 200px;
+    }
+    .menu-hero {
+        padding: 30px 0;
+    }
+    .menu-hero h1 {
+        font-size: 1.8rem;
+    }
+    .menu-hero p {
+        font-size: 1rem;
+    }
+    .menu-category {
+        padding: 15px;
+    }
+    .menu-category h2 {
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+    }
+    .menu-item-content {
+        padding: 15px;
+    }
+}
+
+/* ========================================================= */
+/* === UPDATED STYLES FOR ADMIN USER MENU DROPDOWN (menu.css) === */
+/* ========================================================= */
+
+/* Wrapper for the LI to maintain list structure */
+.user-menu-item {
+    list-style: none; /* Ensures no bullet point */
+    margin-left: 20px;
+}
+
+/* Container for positioning the dropdown */
+.user-menu-container {
+    position: relative;
+    display: inline-block; /* Allows containing element to wrap content */
+}
+
+/* User Icon Styling - uses existing button style */
+.user-icon {
+    /* Ensures the icon remains white */
+    color: white !important; 
+    font-size: 24px;
+    padding: 0; /* Remove padding from button */
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    margin-right: 0; /* Override default margin-right from .btn-outline-secondary */
+}
+
+.user-icon:hover {
+    color: var(--gold-accent) !important; /* Gold accent on hover */
+    text-shadow: none; /* Remove text-shadow if applied by btn-outline-secondary */
+}
+
+/* The actual dropdown box */
+.user-dropdown-menu {
+    position: absolute;
+    top: 100%; /* Positions it directly below the icon/button */
+    right: 0;
+    /* Uses a light background */
+    background-color: white;
+    min-width: 200px;
+    border-radius: 5px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    z-index: 999;
+    padding: 0; 
+    
+    /* Controlled by JavaScript/'.active' class */
+    display: none; 
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.user-dropdown-menu.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* User Info Section (Admin User and Email) */
+.user-info-section {
+    /* No dark background */ 
+    padding: 10px 15px;
+    margin-bottom: 5px; /* Space above Profile Settings link */
+    display: flex;
+    flex-direction: column;
+    /* Added a subtle bottom border for separation */
+    border-bottom: 1px solid #eee; 
+}
+
+/* Admin User Name (Now dark text on white background) */
+.user-info-section .admin-user-name {
+    font-weight: bold;
+    font-size: 16px;
+    /* Dark text for readability on white background */
+    color: #333; 
+}
+
+/* Admin User Email (Now dark text on white background) */
+.user-info-section .admin-user-email {
+    font-size: 13px;
+    /* Slightly lighter dark text for email */
+    color: #666; 
+    opacity: 1; 
+}
+
+/* Profile Settings and Logout Links (The action items) */
+.user-dropdown-menu .dropdown-link {
+    display: block;
+    padding: 8px 15px;
+    text-decoration: none;
+    color: #333; /* Default dark text color for contrast on white background */
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-size: 15px;
+}
+
+/* --- UPDATED ICON ALIGNMENT FOR TWO ICONS (Person + Gear) --- */
+.user-dropdown-menu .dropdown-link i {
+    /* Default spacing for single icon links (like Logout and Messages) */
+    margin-right: 8px;
+    width: 15px;
+    text-align: center;
+}
+
+.user-dropdown-menu .profile-settings-link i {
+    /* Override for the profile link's icons - remove all margin-right */
+    margin-right: 0; 
+}
+
+.user-dropdown-menu .profile-settings-link > i:first-child {
+    /* Remove any space on the right of the person icon */
+    margin-right: 0;
+}
+/* --- END UPDATED ICON ALIGNMENT --- */
+
+.user-dropdown-menu .dropdown-link:hover {
+    /* Use Royal Blue for hover background */
+    background-color: var(--royal-blue); 
+    color: white; /* White text on blue hover */
+}

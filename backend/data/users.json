@@ -1,0 +1,97 @@
+[
+  {
+    "id": 1,
+    "username": "admin",
+    "email": "admin@dsis.com",
+    "password": "admin123",
+    "firstName": "Admin",
+    "lastName": "User",
+    "userType": "admin"
+  },
+  {
+    "id": 2,
+    "username": "customer",
+    "email": "customer@test.com",
+    "password": "********",
+    "firstName": "John",
+    "lastName": "Doe",
+    "userType": "customer"
+  },
+  {
+    "id": 3,
+    "username": "jane",
+    "email": "jane@example.com",
+    "password": "********",
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "phoneNumber": "1234567890",
+    "userType": "customer",
+    "createdAt": "2025-10-08T13:41:58.963Z"
+  },
+  {
+    "id": 4,
+    "username": "hatdogfoods",
+    "email": "hatdogfoods@gmail.com",
+    "password": "********",
+    "firstName": "hatdog",
+    "lastName": "foods",
+    "phoneNumber": "09324422432",
+    "userType": "customer",
+    "createdAt": "2025-10-08T13:44:06.231Z"
+  },
+  {
+    "id": 5,
+    "username": "hotdogfoods",
+    "email": "hotdogfoods@gmail.com",
+    "password": "********",
+    "firstName": "hot",
+    "lastName": "dog",
+    "phoneNumber": "0912345678",
+    "userType": "customer",
+    "createdAt": "2025-10-08T13:46:09.697Z"
+  },
+  {
+    "id": 6,
+    "username": "jacob",
+    "email": "jacob@gmail.com",
+    "password": "********",
+    "firstName": "jacob",
+    "lastName": "jacob",
+    "phoneNumber": "093264342",
+    "userType": "customer",
+    "createdAt": "2025-10-11T13:21:00.822Z"
+  },
+  {
+    "id": 7,
+    "username": "Mico",
+    "email": "Mico@gmail.com",
+    "password": "********",
+    "firstName": "Mico",
+    "lastName": "Mataga",
+    "phoneNumber": "0943942344",
+    "userType": "customer",
+    "createdAt": "2025-10-14T05:36:19.769Z"
+  },
+  {
+    "id": 8,
+    "username": "arienda",
+    "email": "arienda@gmail.com",
+    "password": "********",
+    "firstName": "allen",
+    "lastName": "arienda",
+    "phoneNumber": "091234567",
+    "userType": "customer",
+    "createdAt": "2025-10-14T06:05:28.439Z"
+  },
+  {
+    "id": 9,
+    "username": "castro",
+    "email": "castro@gmail.com",
+    "password": "ako123",
+    "firstName": "lamer",
+    "lastName": "castro",
+    "phoneNumber": "0987654342",
+    "userType": "customer",
+    "createdAt": "2025-11-11T11:52:51.773Z"
+  }
+]
